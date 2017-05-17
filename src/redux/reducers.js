@@ -1,6 +1,6 @@
 // REDUCER
 const initialState = {
-  vrMode: false
+  vrMode: true
 }
 
 export default function reducer(state = initialState, action) {

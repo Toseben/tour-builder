@@ -1,0 +1,11 @@
+import React, { Component } from 'react'
+import { Entity } from 'aframe-react'
+
+export default class Camera extends Component {
+  render() {
+
+    return (
+      <Entity camera look-controls wasd-controls />
+    )
+  }
+}

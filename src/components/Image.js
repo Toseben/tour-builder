@@ -5,8 +5,11 @@ export default class Image extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
+    this.mouseOver = this.mouseOver.bind(this);
+    this.mouseLeave = this.mouseLeave.bind(this);
     this.state = {
-      toggle: false
+      toggle: false,
+      info: false
     }
   }
 
@@ -14,6 +17,15 @@ export default class Image extends Component {
     this.setState(prevState => ({
       toggle: !prevState.toggle
     }));
+    this.mouseLeave()
+  }
+
+  mouseOver() {
+    this.setState({info: true});
+  }
+
+  mouseLeave() {
+    this.setState({info: false});
   }
 
   render() {
@@ -28,10 +40,17 @@ export default class Image extends Component {
 
     return (
       <div>
-        <img
-          onClick={this.toggle.bind(this)}
-          className='img'
-          src={url}></img>
+        <div className='thumb'>
+          <img
+            onClick={this.toggle.bind(this)}
+            onMouseOver={this.mouseOver.bind(this)}
+            onMouseLeave={this.mouseLeave.bind(this)}
+            className='img'
+            src={url}>
+          </img>
+          <div className='overlay' style={this.state.info ? display : hide}></div>
+          <p className="info" style={this.state.info ? display : hide}>{url}</p>
+        </div>
         <div className='modal' style={this.state.toggle ? display : hide}>
           <img
             onClick={this.toggle.bind(this)}

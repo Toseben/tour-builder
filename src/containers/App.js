@@ -5,6 +5,13 @@ import { setMode } from '../redux/actions'
 import Images from '../components/Images'
 import Envs from '../components/Envs'
 
+const imageList = [
+  { key: 0, url: './img/int_01.jpg' },
+  { key: 1, url: './img/int_02.jpg' },
+  { key: 2, url: './img/int_03.jpg' },
+  { key: 3, url: './img/int_04.jpg' }
+]
+
 // APP CONTAINER
 class App extends Component {
   render() {
@@ -15,7 +22,7 @@ class App extends Component {
         <div>
           <h1>360 IMAGES</h1>
           <button onClick={updateMode}>DISABLE VR MODE!</button>
-          <Envs />
+          <Envs imageList={imageList} />
         </div>
       )
     } else {
@@ -23,7 +30,7 @@ class App extends Component {
         <div>
           <h1>FLAT IMAGES</h1>
           <button onClick={updateMode}>ENABLE VR MODE!</button>
-          <Images />
+          <Images imageList={imageList} />
         </div>
       )
     }
