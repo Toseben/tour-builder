@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js --host 0.0.0.0 --public 192.168.176.90:8080",
-    "build": "webpack --config ./webpack.config.js -p"
+    "build": "webpack --hot --config ./webpack.config.js"
   },
   "keywords": [],
   "author": "",
