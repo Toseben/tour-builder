@@ -5,7 +5,7 @@ export default class Camera extends Component {
   render() {
 
     return (
-      <Entity camera look-controls wasd-controls />
+      <Entity id="camera" camera look-controls wasd-controls />
     )
   }
 }

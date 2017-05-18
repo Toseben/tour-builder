@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import reducer from './redux/reducers'
 import App from './containers/App'
 
-const store = createStore(reducer);
+const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 render(
   <Provider store={store}>
@@ -14,4 +14,4 @@ render(
   document.getElementById('root')
 );
 
-module.hot.accept();
+// module.hot.accept();

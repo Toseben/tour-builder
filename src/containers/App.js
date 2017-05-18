@@ -1,7 +1,7 @@
 // IMPORTS
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setMode } from '../redux/actions'
+import { setMode, setRotation, setMouseDown, setMouseUp } from '../redux/actions'
 import Images from '../components/Images'
 import Envs from '../components/Envs'
 
@@ -15,14 +15,19 @@ const imageList = [
 // APP CONTAINER
 class App extends Component {
   render() {
-    const { vrMode, updateMode } = this.props;
+    const { vrMode, isMouseDown,
+      updateMode, updateRotation,
+      updateMouseDown, updateMouseUp } = this.props;
 
     if (vrMode) {
       return (
-        <div>
+        <div
+          onMouseDown={updateMouseDown}
+          onMouseUp={updateMouseUp}
+          onMouseMove={isMouseDown ? updateRotation : null}>
           <h1>360 IMAGES</h1>
           <button onClick={updateMode}>DISABLE VR MODE!</button>
-          <Envs imageList={imageList} />
+        <Envs imageList={imageList} />
         </div>
       )
     } else {
@@ -40,13 +45,17 @@ class App extends Component {
 // CONNECT
 const mapStateToProps = (state) => {
   return {
-    vrMode: state.vrMode
+    vrMode: state.vrMode,
+    isMouseDown: state.isMouseDown
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateMode: () => dispatch(setMode())
+    updateMode: () => dispatch(setMode()),
+    updateRotation: () => dispatch(setRotation()),
+    updateMouseDown: () => dispatch(setMouseDown()),
+    updateMouseUp: () => dispatch(setMouseUp())
   }
 }
 
