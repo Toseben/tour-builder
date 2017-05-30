@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Image from './Image'
 
 class Images extends Component {
+
   render() {
     const { imageList } = this.props;
 

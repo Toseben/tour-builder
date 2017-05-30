@@ -1,23 +1,21 @@
 // REDUCER
 const initialState = {
   vrMode: true,
+  sceneLoaded: false,
+  activeSphere: 1,
   isMouseDown: false,
   rotation: 0
 }
 
 let camera, rotation;
 
-// FIX THIS
-setTimeout(function() {
-  camera = document.getElementById('camera');
-}, 1000);
-
 export default function reducer(state = initialState, action) {
   switch (action.type) {
 
     case 'SET_MODE':
       return Object.assign({}, state, {
-        vrMode: !state.vrMode
+        vrMode: !state.vrMode,
+        sceneLoaded: false
       })
 
     case 'SET_MOUSEDOWN':
@@ -28,6 +26,18 @@ export default function reducer(state = initialState, action) {
     case 'SET_MOUSEUP':
       return Object.assign({}, state, {
         isMouseDown: false
+      })
+
+    case 'SET_LOADED':
+      camera = document.getElementById('camera');
+      return Object.assign({}, state, {
+        sceneLoaded: true,
+        rotation: 0
+      })
+
+    case 'SET_ACTIVE':
+      return Object.assign({}, state, {
+        activeSphere: action.id
       })
 
     case 'SET_ROTATION':
