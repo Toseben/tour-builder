@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1cbde60f4dd42a8ba951"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9d17608c5046302a40cb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -109735,7 +109735,7 @@ exports.default = reducer;
 var initialState = {
   vrMode: true,
   sceneLoaded: false,
-  activeSphere: 1,
+  activeSphere: 0,
   isMouseDown: false,
   rotation: 0
 };

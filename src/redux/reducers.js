@@ -2,7 +2,7 @@
 const initialState = {
   vrMode: true,
   sceneLoaded: false,
-  activeSphere: 1,
+  activeSphere: 0,
   isMouseDown: false,
   rotation: 0
 }
