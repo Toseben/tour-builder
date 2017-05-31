@@ -1,8 +1,9 @@
 // REDUCER
 const initialState = {
   vrMode: true,
+  mobile: false,
   sceneLoaded: false,
-  activeSphere: 0,
+  activeSphere: 1,
   isMouseDown: false,
   rotation: 0
 }
@@ -16,6 +17,11 @@ export default function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         vrMode: !state.vrMode,
         sceneLoaded: false
+      })
+
+    case 'SET_MOBILE':
+      return Object.assign({}, state, {
+        mobile: true
       })
 
     case 'SET_MOUSEDOWN':

@@ -6,8 +6,8 @@ varying vec3 fNormal;
 varying vec3 fPosition;
 varying vec2 vUv;
 
-const vec3 color_A = vec3(0.25, 1.0, 0.25);
-const vec3 color_B = vec3(1.0, 0.25, 0.25);
+const vec3 color_A = vec3(0.172, 0.243, 0.313);
+const vec3 color_B = vec3(0.9, 0.5, 0.133);
 
 void main() {
   vec4 texture = texture2D(texture, vUv, 0.0);

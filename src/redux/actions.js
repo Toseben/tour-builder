@@ -3,6 +3,10 @@ export function setMode() {
   return { type: 'SET_MODE'}
 }
 
+export function setMobile() {
+  return { type: 'SET_MOBILE'}
+}
+
 export function setMouseDown() {
   return { type: 'SET_MOUSEDOWN'}
 }

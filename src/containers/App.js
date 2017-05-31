@@ -1,7 +1,7 @@
 // IMPORTS
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { setMode, setRotation, setMouseDown, setMouseUp } from '../redux/actions'
+import { setMode, setMobile, setRotation, setMouseDown, setMouseUp } from '../redux/actions'
 import Images from '../components/Images'
 import Envs from '../components/Envs'
 
@@ -37,11 +37,44 @@ const visible = [
   { 0: false, 1: true, 2: false, 3: true }
 ]
 
+const mapPos = [
+  { x: 25, y: 55},
+  { x: 51, y: 47.5},
+  { x: 77.5, y: 40},
+  { x: 77.5, y: 65}
+]
+
+const infos = [
+  { room: 'Room One' },
+  { room: 'Room Two' },
+  { room: 'Room Three' },
+  { room: 'Room Four' }
+]
+
 // APP CONTAINER
 class App extends Component {
 
+  componentWillMount() {
+    const { updateMobile, updateRotation } = this.props;
+
+    checkMobile();
+    function checkMobile() {
+      if ('ondeviceorientation' in window) {
+        window.addEventListener('deviceorientation', deviceOrientationTest, false);
+      }
+    }
+
+    function deviceOrientationTest(event) {
+      if (event.beta != null && event.gamma != null) {
+        // Now updates all the time...
+        updateMobile();
+        updateRotation();
+      }
+    }
+  }
+
   render() {
-    const { vrMode, isMouseDown,
+    const { vrMode, mobile, isMouseDown,
       updateMode, updateRotation,
       updateMouseDown, updateMouseUp } = this.props;
 
@@ -53,7 +86,8 @@ class App extends Component {
           onMouseMove={isMouseDown ? updateRotation : null}>
           <h1>360 IMAGES</h1>
           <button onClick={updateMode}>DISABLE VR MODE!</button>
-        <Envs imageList={imageList} locations={locations} rotations={rotations} visible={visible}/>
+          <Envs imageList={imageList} locations={locations} rotations={rotations}
+          visible={visible} mobile={mobile} mapPos={mapPos} infos={infos}/>
         </div>
       )
     } else {
@@ -72,6 +106,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     vrMode: state.vrMode,
+    mobile: state.mobile,
     isMouseDown: state.isMouseDown
   }
 }
@@ -79,6 +114,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateMode: () => dispatch(setMode()),
+    updateMobile: () => dispatch(setMobile()),
     updateRotation: () => dispatch(setRotation()),
     updateMouseDown: () => dispatch(setMouseDown()),
     updateMouseUp: () => dispatch(setMouseUp())

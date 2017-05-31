@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Entity } from 'aframe-react'
-import { setActive} from '../redux/actions'
+import { setActive, setLoaded } from '../redux/actions'
 
 const vertex = require('raw-loader!../shaders/vertex.glsl');
 const fragment = require('raw-loader!../shaders/fragment.glsl');
 
 // Pass reducer to component
-let callReducer;
+let callActive, callLoaded;
 
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
@@ -26,7 +26,7 @@ AFRAME.registerComponent('cursor-listener', {
     const id = parseInt(entity.getAttribute('id'));
     // CLICK
     entity.addEventListener('click', function() {
-      callReducer(id);
+      callActive(id);
     })
     // Enter
     entity.addEventListener('mouseenter', function() {
@@ -51,7 +51,12 @@ AFRAME.registerComponent('apply-shader', {
 
     const mesh = this.el.getObject3D('mesh');
 
-    var loader = new THREE.TextureLoader();
+    var manager = new THREE.LoadingManager();
+    manager.onLoad = function ( ) {
+      callLoaded();
+    };
+
+    var loader = new THREE.TextureLoader(manager);
     var texture = loader.load( this.data.texture );
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
@@ -90,12 +95,14 @@ class Env extends Component {
     z = Math.round(z * 10) * 0.1;
     const loc = { x: x, z: z };
 
-    callReducer = this.props.updateActive;
+    const geoRes = { x: 32, y: 16 };
+    callActive = this.props.updateActive;
+    callLoaded = this.props.updateLoaded;
 
     return (
       <Entity
         id={id}
-        geometry={{primitive: 'sphere', 'radius': radius }}
+        geometry={{primitive: 'sphere', radius: radius, segmentsWidth: geoRes.x, segmentsHeight: geoRes.y }}
         apply-shader={{texture: url, active: active, hover: 0}}
         position={{x: loc.x, z: loc.z}}
         rotation={{y: rotation}}
@@ -113,7 +120,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateActive: (id) => dispatch(setActive(id))
+    updateActive: (id) => dispatch(setActive(id)),
+    updateLoaded: () => dispatch(setLoaded())
   }
 }
 
