@@ -4,6 +4,7 @@ import 'aframe-mouse-cursor-component'
 
 export default class Camera extends Component {
   render() {
+
     if (this.props.mobile) {
       return (
         <Entity id="camera" className="camera" camera="fov: 120" look-controls mouse-cursor>

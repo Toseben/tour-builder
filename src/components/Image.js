@@ -29,7 +29,7 @@ export default class Image extends Component {
   }
 
   render() {
-    const { url } = this.props;
+    const { url, info } = this.props;
 
     const display = {
       display: 'block'
@@ -49,12 +49,12 @@ export default class Image extends Component {
             src={url}>
           </img>
           <div className='overlay' style={this.state.info ? display : hide}></div>
-          <p className="info" style={this.state.info ? display : hide}>{url}</p>
+        <p className="infoImg" style={this.state.info ? display : hide}>{info}</p>
         </div>
         <div className='modal' style={this.state.toggle ? display : hide}>
           <img
             onClick={this.toggle.bind(this)}
-            className='modal-img'
+            className='modalImg'
             src={url}></img>
         </div>
       </div>

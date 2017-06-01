@@ -3,42 +3,49 @@ import { connect } from 'react-redux'
 import { Entity } from 'aframe-react'
 import { setActive, setLoaded } from '../redux/actions'
 
+// LOAD SHADERS
 const vertex = require('raw-loader!../shaders/vertex.glsl');
 const fragment = require('raw-loader!../shaders/fragment.glsl');
 
-// Pass reducer to component
-let callActive, callLoaded;
+// REDUCERS FOR COMPONENTS
+let updateActive, updateLoaded;
 
-// Converts from degrees to radians.
+// DEGREES TO RADIANS
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
 
-// Converts from radians to degrees.
+// RADIANS TO DEGREES
 Math.degrees = function(radians) {
   return radians * 180 / Math.PI;
 };
 
+// CURSOR INTERACTIONS
 AFRAME.registerComponent('cursor-listener', {
 
   init: function() {
     const entity = this.el;
     const id = parseInt(entity.getAttribute('id'));
+
     // CLICK
     entity.addEventListener('click', function() {
-      callActive(id);
+      updateActive(id);
     })
-    // Enter
+
+    // ENTER
     entity.addEventListener('mouseenter', function() {
       entity.setAttribute('apply-shader', { hover: '1' });
     })
+
     // EXIT
     entity.addEventListener('mouseleave', function() {
       entity.setAttribute('apply-shader', { hover: '0' });
     })
+
   }
 })
 
+// APPLY SHADERS
 AFRAME.registerComponent('apply-shader', {
 
   schema: {
@@ -48,17 +55,14 @@ AFRAME.registerComponent('apply-shader', {
   },
 
   init: function() {
-
     const mesh = this.el.getObject3D('mesh');
-
     var manager = new THREE.LoadingManager();
     manager.onLoad = function ( ) {
-      callLoaded();
+      updateLoaded();
     };
 
     var loader = new THREE.TextureLoader(manager);
     var texture = loader.load( this.data.texture );
-    texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
     this.uniforms = {
       texture: { type: 't', value: texture },
@@ -84,29 +88,30 @@ AFRAME.registerComponent('apply-shader', {
 class Env extends Component {
 
   render() {
-    const { id, url, rotation, visible } = this.props;
-    const location = Math.radians(this.props.location);
+    const { id, url, rot, vis } = this.props;
     const active = this.props.active ? 1 : 0;
     const radius = this.props.active ? 1.5 : 0.25;
+    const geoRes = { x: 32, y: 16 };
 
-    let x = Math.cos(location) * (1 - active);
-    let z = Math.sin(location) * (1 - active);
+    const loc = Math.radians(this.props.loc);
+    let x = Math.cos(loc) * (1 - active);
+    let z = Math.sin(loc) * (1 - active);
     x = Math.round(x * 10) * 0.1;
     z = Math.round(z * 10) * 0.1;
-    const loc = { x: x, z: z };
+    const radianLoc = { x: x, z: z };
 
-    const geoRes = { x: 32, y: 16 };
-    callActive = this.props.updateActive;
-    callLoaded = this.props.updateLoaded;
+    // REDUCERS FOR COMPONENTS
+    updateActive = this.props.updateActive;
+    updateLoaded = this.props.updateLoaded;
 
     return (
       <Entity
         id={id}
         geometry={{primitive: 'sphere', radius: radius, segmentsWidth: geoRes.x, segmentsHeight: geoRes.y }}
         apply-shader={{texture: url, active: active, hover: 0}}
-        position={{x: loc.x, z: loc.z}}
-        rotation={{y: rotation}}
-        visible={visible}
+        position={{x: radianLoc.x, z: radianLoc.z}}
+        rotation={{y: rot}}
+        visible={vis}
         cursor-listener
       />
     )

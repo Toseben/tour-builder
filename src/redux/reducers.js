@@ -58,30 +58,3 @@ export default function reducer(state = initialState, action) {
       return state
   }
 }
-
-// TEST
-// const toggleMode = (mode) => {
-//   return {
-//     vrMode: !mode.vrMode
-//   }
-// }
-// import expect from 'expect'
-// import deepFreeze from 'deep-freeze'
-//
-// const testModeToggle = () => {
-//   const modeBefore = {
-//     vrMode: false
-//   }
-//   const modeAfter = {
-//     vrMode: true
-//   }
-//
-//   deepFreeze(modeBefore)
-//
-//   expect(
-//     toggleMode(modeBefore)
-//   ).toEqual(modeAfter)
-// }
-//
-// testModeToggle();
-// console.log('All tests passed!')

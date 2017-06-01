@@ -1,42 +1,77 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { setMobile } from '../redux/actions'
 
 import 'aframe'
 import { Entity, Scene } from 'aframe-react'
 import Env from './Env'
 import Camera from './Camera'
 
+// LOC OF SPHERES IN DEGREES
+const loc = [
+  { 0: 0, 1: 300, 2: 210, 3: 0 },
+  { 0: 310, 1: 0, 2: 350, 3: 262.5 },
+  { 0: 270, 1: 270, 2: 0, 3: 270 },
+  { 0: 90, 1: 175, 2: 270, 3: 0 }
+]
+
+// ROTATION OF SPHERES IN DEGREES
+const rot = [
+  { 0: 222.5, 1: 270, 2: 300, 3: 0 },
+  { 0: 160, 1: 35, 2: 135, 3: 270 },
+  { 0: 60, 1: 0, 2: 85, 3: 0 },
+  { 0: 0, 1: 45, 2: 0, 3: 90 }
+]
+
+// IS SPHERE VISIBLE
+const vis = [
+  { 0: true, 1: true, 2: true, 3: false },
+  { 0: true, 1: true, 2: true, 3: true },
+  { 0: true, 1: false, 2: true, 3: false },
+  { 0: false, 1: true, 2: false, 3: true }
+]
+
+// ARROW LOCATION ON MAP
+const arrowLoc = [
+  { x: 25, y: 55},
+  { x: 51, y: 47.5},
+  { x: 77.5, y: 40},
+  { x: 77.5, y: 65}
+]
+
 class Envs extends Component {
 
   render() {
-    const { imageList, locations, rotations, visible, rotation, activeSphere, mobile } = this.props;
-    const currentLocations = locations[activeSphere];
-    const currentRotations = rotations[activeSphere];
-    const visibleTag = visible[activeSphere];
-    const mapPos = this.props.mapPos[activeSphere];
-    const info = this.props.infos[activeSphere];
+    const { imageList, rotation, activeSphere, mobile } = this.props;
+    const { updateMobile } = this.props;
+    const currentLoc = loc[activeSphere];
+    const currentRot = rot[activeSphere];
+    const visTag = vis[activeSphere];
+    const info = imageList[activeSphere].room;
 
-    let rotate = 'rotate(' + -rotation + 'deg)';
-    let left = mapPos.x + '%';
-    let top = mapPos.y + '%';
-    let css = {
-      WebkitTransform: rotate,
-      left: left,
-      top: top
+    let arrowRotation = 'rotate(' + -rotation + 'deg)';
+    let arrowLeft = arrowLoc[activeSphere].x + '%';
+    let arrowTop = arrowLoc[activeSphere].y + '%';
+    let arrow_css = {
+      WebkitTransform: arrowRotation,
+      left: arrowLeft,
+      top: arrowTop
     };
 
-    const loadingVisible = this.props.sceneLoaded ? 0.0 : 1.0;
-    let loadingCss = {
-      opacity: loadingVisible
+    const loadingVis = this.props.sceneLoaded ? 0 : 1;
+    let loading_css = {
+      opacity: loadingVis
     };
 
-    // USE THIS!
-    // console.log(window.AFRAME.utils.device.isMobile())
+    // CHECK IF MOBILE
+    if (window.AFRAME.utils.device.isMobile()) {
+      updateMobile();
+    }
 
     return (
-      <div className='img-container'>
+      <div className='imgContainer'>
 
-        <div className="loading" style={loadingCss}>
+        <div className="loading" style={loading_css}>
           <div className="sk-circle">
             <div className="sk-circle1 sk-child"></div>
             <div className="sk-circle2 sk-child"></div>
@@ -53,20 +88,19 @@ class Envs extends Component {
           </div>
         </div>
 
-        <h3 className="info-text">{info.room}</h3>
+        <h3 className="infoEnv">{info}</h3>
 
         <Scene className='aframe' embedded>
-          <a-sky color="#ECECEC"></a-sky>
           {imageList.map(image => <Env id={image.key} {...image}
             active={image.key === activeSphere}
-            location={currentLocations[image.key]}
-            rotation={currentRotations[image.key]}
-            visible={visibleTag[image.key]}/>)}
+            loc={currentLoc[image.key]}
+            rot={currentRot[image.key]}
+            vis={visTag[image.key]}/>)}
           <Camera mobile={mobile}/>
         </Scene>
-        <div className="plan-container">
+        <div className="planContainer">
           <img className="plan" src="./img/floorplan.png"></img>
-          <img className="arrow" src="./img/arrow.png" style={css}></img>
+          <img className="arrow" src="./img/arrow.png" style={arrow_css}></img>
         </div>
       </div>
     )
@@ -77,6 +111,7 @@ class Envs extends Component {
 const mapStateToProps = (state) => {
   return {
     rotation: state.rotation,
+    mobile: state.mobile,
     activeSphere: state.activeSphere,
     sceneLoaded: state.sceneLoaded
   }
@@ -84,6 +119,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    updateMobile: () => dispatch(setMobile())
   }
 }
 

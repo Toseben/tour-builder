@@ -5,11 +5,20 @@ module.exports = {
     './src/index.js'
   ],
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'react-hot-loader!babel-loader'
-    }]
+    loaders: [
+      {
+        // JavaScript
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loader: 'react-hot-loader!babel-loader'
+      },
+      {
+        // CSS
+        test: /\.css$/,
+        exclude: /node_modules/,
+        loader: 'style-loader!css-loader?-url'
+      }
+    ]
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']

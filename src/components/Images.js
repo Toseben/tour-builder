@@ -7,8 +7,8 @@ class Images extends Component {
     const { imageList } = this.props;
 
     return (
-      <div className='img-container selectDisable'>
-        {imageList.map(image => <Image id={image.key} {...image} />)}
+      <div className='imgContainer selectDisable'>
+        {imageList.map(image => <Image id={image.key} info={imageList[image.key].room} {...image} />)}
       </div>
     )
   }
