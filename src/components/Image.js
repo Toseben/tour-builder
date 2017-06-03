@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { setModal, setLoaded } from '../redux/actions'
 
-export default class Image extends Component {
+class Image extends Component {
 
   constructor(props) {
     super(props);
@@ -29,35 +31,54 @@ export default class Image extends Component {
   }
 
   render() {
-    const { url, info } = this.props;
+    const { url, info, id, mobile } = this.props;
+    const { updateModal, updateLoaded } = this.props;
 
     const display = {
       display: 'block'
     };
     const hide = {
-      display: 'none'
+      display: mobile ? 'block' : 'none'
     };
+
+    let className = 'thumb';
+    className += id % 2 ? ' right' : ' left';
+    className += id < 2 ? ' top' : ' bottom';
 
     return (
       <div>
-        <div className='thumb'>
+        <div className={className}>
           <img
-            onClick={this.toggle.bind(this)}
+            onClick={() => updateModal(url)}
+            onLoad={updateLoaded}
             onMouseOver={this.mouseOver.bind(this)}
             onMouseLeave={this.mouseLeave.bind(this)}
-            className='img'
+            className='thumbImg'
             src={url}>
           </img>
           <div className='overlay' style={this.state.info ? display : hide}></div>
-        <p className="infoImg" style={this.state.info ? display : hide}>{info}</p>
-        </div>
-        <div className='modal' style={this.state.toggle ? display : hide}>
-          <img
-            onClick={this.toggle.bind(this)}
-            className='modalImg'
-            src={url}></img>
+          <p className="infoImg" style={this.state.info ? display : hide}>{info}</p>
         </div>
       </div>
     )
   }
 }
+
+// CONNECT
+const mapStateToProps = (state) => {
+  return {
+    mobile: state.mobile,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateModal: (url) => dispatch(setModal(url)),
+    updateLoaded: () => dispatch(setLoaded())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Image)

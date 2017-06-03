@@ -1,6 +1,8 @@
 // REDUCER
 const initialState = {
-  vrMode: true,
+  vrMode: false,
+  modal: false,
+  image: undefined,
   mobile: false,
   sceneLoaded: false,
   activeSphere: 1,
@@ -17,6 +19,24 @@ export default function reducer(state = initialState, action) {
       return Object.assign({}, state, {
         vrMode: !state.vrMode,
         sceneLoaded: false
+      })
+
+    case 'SET_MODE_TRUE':
+      return Object.assign({}, state, {
+        vrMode: true,
+        sceneLoaded: false
+      })
+
+    case 'SET_MODE_FALSE':
+      return Object.assign({}, state, {
+        vrMode: false,
+        sceneLoaded: false
+      })
+
+    case 'SET_MODAL':
+      return Object.assign({}, state, {
+        modal: !state.modal,
+        image: action.url
       })
 
     case 'SET_MOBILE':

@@ -3,6 +3,20 @@ export function setMode() {
   return { type: 'SET_MODE'}
 }
 
+export function setModeTrue() {
+  return { type: 'SET_MODE_TRUE'}
+}
+
+export function setModeFalse() {
+  return { type: 'SET_MODE_FALSE'}
+}
+
+export function setModal(url) {
+  return { type: 'SET_MODAL',
+    url: url
+  }
+}
+
 export function setMobile() {
   return { type: 'SET_MOBILE'}
 }

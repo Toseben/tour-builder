@@ -5,14 +5,14 @@ import { setRotation, setMouseDown, setMouseUp } from '../redux/actions'
 import Images from '../components/Images'
 import Envs from '../components/Envs'
 
-const styles = require('../scss/styles.css')
+const styles = require('../scss/styles.scss')
 
 // IMAGE DATA TO PASS TO CHILDREN
 const imageList = [
-  { key: 0, url: './img/360_01.jpg', room: 'Room 1' },
-  { key: 1, url: './img/360_02.jpg', room: 'Room 2' },
-  { key: 2, url: './img/360_03.jpg', room: 'Room 3' },
-  { key: 3, url: './img/360_04.jpg', room: 'Room 4' }
+  { key: 0, url: './img/360_01.jpg', room: 'Living Room' },
+  { key: 1, url: './img/360_02.jpg', room: 'Dining Room' },
+  { key: 2, url: './img/360_03.jpg', room: 'Kitchen' },
+  { key: 3, url: './img/360_04.jpg', room: 'Bedroom' }
 ]
 
 // VISUAL CONTAINER
