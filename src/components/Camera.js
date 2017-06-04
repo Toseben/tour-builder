@@ -7,9 +7,9 @@ export default class Camera extends Component {
 
     if (this.props.mobile) {
       return (
-        <Entity id="camera" className="camera" camera="fov: 120" look-controls mouse-cursor>
+        <Entity id="camera" className="camera" camera="fov: 80" look-controls mouse-cursor>
           <a-entity cursor="fuse: true; fuseTimeout: 1000"
-                    position="0 0 -0.75" scale="0.025 0.025 0.025"
+                    position="0 0 -1.0" scale="0.015 0.015 0.015"
                     material="color: #e74c3c; shader: flat"
                     geometry="primitive: sphere">
           </a-entity>
@@ -17,8 +17,8 @@ export default class Camera extends Component {
       )
     } else {
       return (
-        <Entity id="camera" className="camera" camera
-          look-controls mouse-cursor wasd-controls>
+        <Entity id="camera" className="camera" camera="fov: 100"
+          look-controls mouse-cursor>
         </Entity>
       )
     }

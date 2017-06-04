@@ -61,28 +61,40 @@ AFRAME.registerComponent('apply-shader', {
       updateLoaded();
     };
 
+    this.rotate = 0;
+    this.initRotate = this.el.getAttribute('rotation').y;
+
     var loader = new THREE.TextureLoader(manager);
     var texture = loader.load( this.data.texture );
     texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
 
     this.uniforms = {
       texture: { type: 't', value: texture },
       active: { value: this.data.active },
-      hover: { value: this.data.hover }
+      hover: { value: this.data.hover },
+      offset: { value: 0.0 }
     };
 
     mesh.material = new THREE.ShaderMaterial({
       uniforms: this.uniforms,
       vertexShader: vertex,
       fragmentShader: fragment,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
+      transparent: true
     });
   },
 
   update: function() {
     this.uniforms.active.value = this.data.active;
     this.uniforms.hover.value = this.data.hover;
+  },
+
+  // SOMETHING FUCKED WITH THIS
+  tick: function() {
+    this.rotate += this.data.active ? 0 : 0.25;
+    this.el.setAttribute('rotation', { y: this.rotate + this.initRotate });
+    this.uniforms.offset.value += 0.25;
   }
 
 })
@@ -92,7 +104,7 @@ class Env extends Component {
   render() {
     const { id, url, rot, vis } = this.props;
     const active = this.props.active ? 1 : 0;
-    const radius = this.props.active ? 1.5 : 0.25;
+    const radius = this.props.active ? 1.5 : 0.3;
     const geoRes = { x: 24, y: 24 };
 
     const loc = Math.radians(this.props.loc);
@@ -102,8 +114,6 @@ class Env extends Component {
     z = Math.round(z * 10) * 0.1;
     const radianLoc = { x: x, z: z };
 
-    console.log(radianLoc)
-
     // REDUCERS FOR COMPONENTS
     updateActive = this.props.updateActive;
     updateLoaded = this.props.updateLoaded;
@@ -111,9 +121,7 @@ class Env extends Component {
     return (
       <Entity
         id={id}
-        // geometry={{primitive: 'sphere', radius: radius, segmentsWidth: geoRes.x, segmentsHeight: geoRes.y }}
-        geometry={{primitive: 'plane' }}
-        scale={{x: 2, y: 1, z: 1}}
+        geometry={{primitive: 'sphere', radius: radius, segmentsWidth: geoRes.x, segmentsHeight: geoRes.y }}
         apply-shader={{texture: url, active: active, hover: 0}}
         position={{x: radianLoc.x, z: radianLoc.z}}
         rotation={{y: rot}}

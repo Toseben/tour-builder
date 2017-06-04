@@ -7,6 +7,9 @@ import { Entity, Scene } from 'aframe-react'
 import Env from './Env'
 import Camera from './Camera'
 
+require('aframe-always-fullscreen-component');
+require('platform');
+
 // LOC OF SPHERES IN DEGREES
 const loc = [
   { 0: 0, 1: 300, 2: 210, 3: 0 },
@@ -63,15 +66,24 @@ class Envs extends Component {
       opacity: loadingVis
     };
 
+    // TRIGGER RESIZE FOR CURSOR
+    var scene = document.querySelector('a-scene');
+    if (scene) {
+      scene.addEventListener('loaded', run);
+    }
+
+    function run () {
+      setTimeout(function() {
+        var event = document.createEvent('HTMLEvents');
+        event.initEvent('resize', true, false);
+        window.dispatchEvent(event);
+      }, 100)
+    };
+
     // CHECK IF MOBILE
     if (window.AFRAME.utils.device.isMobile()) {
       updateMobile();
     }
-
-    // let canvas = document.getElementsByClassName('a-canvas')[0];
-    // if (canvas) {
-    //   console.log(canvas.getBoundingClientRect());
-    // }
 
     return (
       <div className='imgContainer'>
@@ -93,9 +105,10 @@ class Envs extends Component {
           </div>
         </div>
 
-        <h3 className="infoEnv">{info}</h3>
+        <p className="infoEnv">{info}</p>
 
-        <Scene className='aframe' embedded stats>
+        {/* <Scene className='aframe' embedded="true" always-fullscreen="platform:all"> */}
+        <Scene className='aframe' embedded="true">
           {imageList.map(image => <Env id={image.key} {...image}
             active={image.key === activeSphere}
             loc={currentLoc[image.key]}
@@ -104,7 +117,7 @@ class Envs extends Component {
           <Camera mobile={mobile}/>
         </Scene>
         <div className="planContainer">
-          <img className="plan" src="./img/floorplan.png"></img>
+          <img className="plan" src="./img/floorplan.jpg"></img>
           <img className="arrow" src="./img/arrow.png" style={arrow_css}></img>
         </div>
       </div>

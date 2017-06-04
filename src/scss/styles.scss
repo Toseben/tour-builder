@@ -84,8 +84,7 @@ h1.company {
 
 @media only screen
   and (min-device-width: 320px)
-  and (max-device-width: 480px)
-  and (-webkit-min-device-pixel-ratio: 2) {
+  and (max-device-width: 480px) {
   .infoContainer {
     height: calc(100vh - 15vh - 100vw);
   }
@@ -254,31 +253,28 @@ span.icon-heart {
 }
 
 /* INFO TEXT */
-.infoImg {
+.infoImg, .infoEnv {
   position: absolute;
   z-index: 1;
-  transform: translate(-50%,-50%);
   left: 50%;
-  top: 50%;
-  color: white;
-  pointer-events: none;
-  text-transform: uppercase;
-  font-size: calc(1.5vmin + 6px);
-  font-weight: 400;
-  letter-spacing: 0.75vmin;
-  width: 100%;
-}
-
-.infoEnv {
-  position: absolute;
-  z-index: 1;
-  transform: translate(-50%, 0%);
-  top: 5%;
-  left: 50%;
-  margin-top: 1vw;
   color: white;
   pointer-events: none;
   text-shadow: 2px 2px 8px #444;
+  letter-spacing: 0.75vmin;
+  text-transform: uppercase;
+  font-size: calc(1.5vmin + 6px);
+  font-weight: 400;
+}
+
+.infoImg {
+  transform: translate(-50%,-50%);
+  width: 100%;
+  top: 50%;
+}
+
+.infoEnv {
+  transform: translate(-50%, 0%);
+  top: calc(5px + 1.25vh);
 }
 
 /* ENVS */
@@ -290,15 +286,15 @@ span.icon-heart {
 
 /* PLAN */
 .planContainer {
-  width: 25vh;
-  height: 25vh;
+  width: 12.5vh;
+  height: 12.5vh;
   max-width: 200px;
   max-height: 200px;
   position: absolute;
-  margin: 0 1vw;
-  right: 0%;
-  top: 50%;
-  transform: translate(0%,-50%);
+  margin: 5px;
+  margin-top: 10px;
+  left: 0%;
+  top: 5vh;
   pointer-events: none;
   background: #fff;
   opacity: 0.75;
@@ -461,4 +457,52 @@ span.icon-heart {
 .rs-base * {
   font-size: 12px !important;
   letter-spacing: 0px;
+}
+
+// FULLSCREEN
+#fullscreenmask, #mask {
+    color: #fff;
+    letter-spacing: 4px;
+    font-weight: 300;
+    font-size: calc(2vmin + 6px);
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
+}
+
+#fullscreenmask {
+  background-color: #589600 !important;
+}
+
+#fullscreenmask:before {
+    content: 'Click/Tap for Fullscreen';
+    position: relative;
+    top: 30%;
+}
+
+#mask:before {
+    content: 'Scroll Down for Fullscreen';
+    position: relative;
+    top: 30%;
+}
+
+.a-enter-vr {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.a-enter-vr-button {
+  top: 0;
+  left: 0;
+  height: 5vh;
+  width: 12.5vh;
+  margin: 5px;
+  pointer-events: all;
+  background-color: rgba(#e74c3c, 0.5);
+}
+
+.a-enter-vr-button:hover {
+  background-color: #444;
 }
