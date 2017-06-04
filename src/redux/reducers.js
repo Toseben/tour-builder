@@ -1,6 +1,6 @@
 // REDUCER
 const initialState = {
-  vrMode: false,
+  vrMode: true,
   modal: false,
   image: undefined,
   mobile: false,

@@ -18,7 +18,7 @@ export default class Camera extends Component {
     } else {
       return (
         <Entity id="camera" className="camera" camera
-          look-controls mouse-cursor>
+          look-controls mouse-cursor wasd-controls>
         </Entity>
       )
     }

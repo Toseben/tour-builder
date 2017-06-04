@@ -5,16 +5,16 @@
   margin: 0px;
   box-sizing: border-box;
   // outline: 2px solid red !important;
-  font-family: 'Lato', sans-serif;
-  letter-spacing: 4px;
-  font-weight: 300;
-  font-size: calc(1vmin + 6px);
-  text-align: center;
 }
 
 body {
   overflow: hidden;
   background: #c7dbab;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 4px;
+  font-weight: 300;
+  font-size: calc(1vmin + 6px);
+  text-align: center;
 }
 
 .app {
@@ -454,4 +454,11 @@ span.icon-heart {
     -webkit-transform: scale(1);
             transform: scale(1);
   }
+}
+
+// STATS
+
+.rs-base * {
+  font-size: 12px !important;
+  letter-spacing: 0px;
 }

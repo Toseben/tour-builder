@@ -68,6 +68,11 @@ class Envs extends Component {
       updateMobile();
     }
 
+    // let canvas = document.getElementsByClassName('a-canvas')[0];
+    // if (canvas) {
+    //   console.log(canvas.getBoundingClientRect());
+    // }
+
     return (
       <div className='imgContainer'>
 
@@ -90,7 +95,7 @@ class Envs extends Component {
 
         <h3 className="infoEnv">{info}</h3>
 
-        <Scene className='aframe' embedded>
+        <Scene className='aframe' embedded stats>
           {imageList.map(image => <Env id={image.key} {...image}
             active={image.key === activeSphere}
             loc={currentLoc[image.key]}
