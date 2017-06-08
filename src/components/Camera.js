@@ -11,7 +11,8 @@ export default class Camera extends Component {
           <a-entity cursor="fuse: true; fuseTimeout: 1000"
                     position="0 0 -1.0" scale="0.015 0.015 0.015"
                     material="color: #e74c3c; shader: flat"
-                    geometry="primitive: sphere">
+                    geometry="primitive: sphere"
+                    id="CURSOR">
           </a-entity>
         </Entity>
       )

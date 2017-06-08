@@ -5,12 +5,20 @@ const initialState = {
   image: undefined,
   mobile: false,
   sceneLoaded: false,
-  activeSphere: 1,
+  activeSphere: 2,
   isMouseDown: false,
   rotation: 0
 }
 
 let camera, rotation;
+
+function triggerWindowResize() {
+  setTimeout(function() {
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent('resize', true, false);
+    window.dispatchEvent(event);
+  }, 100)
+};
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
@@ -55,6 +63,7 @@ export default function reducer(state = initialState, action) {
       })
 
     case 'SET_LOADED':
+      triggerWindowResize();
       camera = document.getElementById('camera');
       return Object.assign({}, state, {
         sceneLoaded: true,

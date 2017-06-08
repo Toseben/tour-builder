@@ -1,7 +1,9 @@
 uniform sampler2D texture;
 uniform int active;
 uniform int hover;
+uniform float rotate;
 uniform float offset;
+uniform float anim;
 
 varying vec3 fNormal;
 varying vec3 fPosition;
@@ -9,6 +11,7 @@ varying vec2 vUv;
 
 const vec3 color_A = vec3(0.345, 0.588, 0.0);
 const vec3 color_B = vec3(0.905, 0.298, 0.235);
+const vec3 color_C = vec3(0.952, 0.611, 0.07);
 
 float map(float value, float inMin, float inMax, float outMin, float outMax) {
   return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
@@ -20,6 +23,8 @@ void main() {
   if (active == 0) {
     modUv = vec2((vUv.x - 0.5) * 2.0 + 0.5, (vUv.y - 0.5) * 1.5 + 0.5);
   };
+
+  modUv.x = modUv.x + rotate;
 
   vec4 texture = texture2D(texture, modUv, 0.0);
   vec3 normal = normalize( fNormal );
@@ -34,11 +39,16 @@ void main() {
 
   vec3 color = color_A;
   if (hover == 1) {
-    color = color_B;
+    color = mix(color_B, color_C, anim);
+  };
+
+  float hoverAnim = 0.0;
+  if (hover == 1) {
+    hoverAnim = anim;
   };
 
   float stripe = sin(vUv.y * 300.0 + offset);
-  stripe = map(stripe, -1.0, 1.0, 0.0, 1.0);
+  stripe = map(stripe, -1.0, 1.0, hoverAnim, 1.0);
   float alpha = max(clamp(stripe, 0.0, 1.0), (1.0 - (rim * 0.5)));
   stripe *= rim;
 

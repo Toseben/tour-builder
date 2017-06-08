@@ -3,12 +3,15 @@ import { connect } from 'react-redux'
 import { Entity } from 'aframe-react'
 import { setActive, setLoaded } from '../redux/actions'
 
+import $ from 'jquery'
+
 // LOAD SHADERS
 const vertex = require('raw-loader!../shaders/vertex.glsl');
 const fragment = require('raw-loader!../shaders/fragment_adv.glsl');
 
 // REDUCERS FOR COMPONENTS
-let updateActive, updateLoaded;
+let updateActive, updateLoaded, activeSphere, mobile;
+let shader = [];
 
 // DEGREES TO RADIANS
 Math.radians = function(degrees) {
@@ -26,14 +29,34 @@ AFRAME.registerComponent('cursor-listener', {
   init: function() {
     const entity = this.el;
     const id = parseInt(entity.getAttribute('id'));
+    const cam = document.querySelector('#camera');
 
     // CLICK
     entity.addEventListener('click', function() {
+      if (id !== activeSphere) {
+        cam.setAttribute('rotation', {y: 0});
+      };
       updateActive(id);
     })
 
     // ENTER
     entity.addEventListener('mouseenter', function() {
+
+      if (mobile) {
+        // ANIM COLOR ON MOBILE
+        $({animValue: 0}).animate({animValue: 1}, {
+          duration: 1000,
+          complete: function() {
+            setTimeout(function() {
+              shader[id].uniforms.anim.value = 0.0;
+            }, 250);
+          },
+          step: function() {
+            shader[id].uniforms.anim.value = this.animValue;
+          }
+        });
+      }
+
       entity.setAttribute('apply-shader', { hover: '1' });
     })
 
@@ -55,14 +78,13 @@ AFRAME.registerComponent('apply-shader', {
   },
 
   init: function() {
+    shader.push(this);
+
     const mesh = this.el.getObject3D('mesh');
     var manager = new THREE.LoadingManager();
     manager.onLoad = function ( ) {
       updateLoaded();
     };
-
-    this.rotate = 0;
-    this.initRotate = this.el.getAttribute('rotation').y;
 
     var loader = new THREE.TextureLoader(manager);
     var texture = loader.load( this.data.texture );
@@ -73,7 +95,9 @@ AFRAME.registerComponent('apply-shader', {
       texture: { type: 't', value: texture },
       active: { value: this.data.active },
       hover: { value: this.data.hover },
-      offset: { value: 0.0 }
+      rotate: { value: 0.0 },
+      offset: { value: 0.0 },
+      anim: { value: 0.0 }
     };
 
     mesh.material = new THREE.ShaderMaterial({
@@ -88,12 +112,14 @@ AFRAME.registerComponent('apply-shader', {
   update: function() {
     this.uniforms.active.value = this.data.active;
     this.uniforms.hover.value = this.data.hover;
+
+    if (this.data.active === 1) {
+      this.uniforms.rotate.value = 0.0;
+    }
   },
 
-  // SOMETHING FUCKED WITH THIS
   tick: function() {
-    this.rotate += this.data.active ? 0 : 0.25;
-    this.el.setAttribute('rotation', { y: this.rotate + this.initRotate });
+    this.uniforms.rotate.value += this.data.active ? 0 : 0.0025;
     this.uniforms.offset.value += 0.25;
   }
 
@@ -117,6 +143,8 @@ class Env extends Component {
     // REDUCERS FOR COMPONENTS
     updateActive = this.props.updateActive;
     updateLoaded = this.props.updateLoaded;
+    activeSphere = this.props.activeSphere;
+    mobile = this.props.mobile;
 
     return (
       <Entity
@@ -134,6 +162,8 @@ class Env extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    activeSphere: state.activeSphere,
+    mobile: state.mobile
   }
 }
 

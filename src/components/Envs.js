@@ -13,33 +13,33 @@ require('platform');
 // LOC OF SPHERES IN DEGREES
 const loc = [
   { 0: 0, 1: 300, 2: 210, 3: 0 },
-  { 0: 310, 1: 0, 2: 350, 3: 262.5 },
-  { 0: 270, 1: 270, 2: 0, 3: 270 },
+  { 0: 282.5, 1: 0, 2: 327.5, 3: 237.5 },
+  { 0: 0, 1: 270, 2: 0, 3: 270 },
   { 0: 90, 1: 175, 2: 270, 3: 0 }
 ]
 
 // ROTATION OF SPHERES IN DEGREES
 const rot = [
   { 0: 222.5, 1: 270, 2: 300, 3: 0 },
-  { 0: 160, 1: 35, 2: 135, 3: 270 },
-  { 0: 60, 1: 0, 2: 85, 3: 0 },
-  { 0: 0, 1: 45, 2: 0, 3: 90 }
+  { 0: 230, 1: 60, 2: 120, 3: 300 },
+  { 0: 60, 1: 90, 2: 85, 3: 0 },
+  { 0: 0, 1: 180, 2: 0, 3: 90 }
 ]
 
 // IS SPHERE VISIBLE
 const vis = [
   { 0: true, 1: true, 2: true, 3: false },
   { 0: true, 1: true, 2: true, 3: true },
-  { 0: true, 1: false, 2: true, 3: false },
+  { 0: false, 1: true, 2: true, 3: false },
   { 0: false, 1: true, 2: false, 3: true }
 ]
 
 // ARROW LOCATION ON MAP
 const arrowLoc = [
-  { x: 25, y: 55},
-  { x: 51, y: 47.5},
-  { x: 77.5, y: 40},
-  { x: 77.5, y: 65}
+  { x: 60, y: 80},
+  { x: 70, y: 52.5},
+  { x: 40, y: 45},
+  { x: 70, y: 30}
 ]
 
 class Envs extends Component {
@@ -64,20 +64,6 @@ class Envs extends Component {
     const loadingVis = this.props.sceneLoaded ? 0 : 1;
     let loading_css = {
       opacity: loadingVis
-    };
-
-    // TRIGGER RESIZE FOR CURSOR
-    var scene = document.querySelector('a-scene');
-    if (scene) {
-      scene.addEventListener('loaded', run);
-    }
-
-    function run () {
-      setTimeout(function() {
-        var event = document.createEvent('HTMLEvents');
-        event.initEvent('resize', true, false);
-        window.dispatchEvent(event);
-      }, 100)
     };
 
     // CHECK IF MOBILE
@@ -118,7 +104,8 @@ class Envs extends Component {
         </Scene>
         <div className="planContainer">
           <img className="plan" src="./img/floorplan.jpg"></img>
-          <img className="arrow" src="./img/arrow.png" style={arrow_css}></img>
+          <img className="arrow" src="./img/fov.png" style={arrow_css}></img>
+          <img className="circle" src="./img/circle.png" style={arrow_css}></img>
         </div>
       </div>
     )
